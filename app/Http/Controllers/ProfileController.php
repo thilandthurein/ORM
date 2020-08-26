@@ -70,7 +70,7 @@ class ProfileController extends Controller
     {
         
        
-        $profiles = Profile::find($id)::with('employee')->where('id','=',$id)->get();
+        $profiles = Profile::with('employee')->where('id','=',$id)->get();
         //dd($profiles);
         return view('employeeshow',compact('profiles'));
     }

@@ -36,8 +36,25 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Add</button>
             </form>
+            <div class="col-md-6">
+                <form action="{{ route('positionfile-import') }}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                    <div class="form-group mb-4" style="max-width: 500px; margin: 0 auto;">
+                    <div class="custom-file text-left">
+                    <input type="file" name="file" id="customFile">
+                    <label class="" for="customFile"></label>
+                    </div>
+                    </div>
+                    <button class="btn btn-primary">Import data</button>
+                </form>
+            </div> 
         </div>
         <div class="row">
+            <div style="text-align: right;">
+            <a class="btn btn-success" href="{{ route('positionexcel-export')}}">Export data</a>
+             <a class="btn btn-success" href="{{ route('positioncsv-export')}}">Export data csv</a>
+             <a class="btn btn-primary" href="{{ URL::to('/employee/pdf/position') }}">Export to PDF</a>
+            </div>
             <table class="table table-responsive common-table">
                 <thead>
                     <tr>

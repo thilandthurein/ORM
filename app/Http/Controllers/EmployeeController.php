@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Position;
 use App\Employee;
+use App\Exports\EmployeesExport;
+use App\Imports\EmployeesImport;
+use PDF;
 class EmployeeController extends Controller
 {
     /**
@@ -101,4 +105,28 @@ class EmployeeController extends Controller
     {
         //
     }
+ /**
+ * @return \Illuminate\Support\Collection
+ */
+    public function fileImport(Request $request){
+        Excel::import(new EmployeesImport, $request->file('file')->store('temp'));
+         return back();
+    }
+ /**
+ * @return \Illuminate\Support\Collection
+ */
+    public function fileExport() {
+    return Excel::download(new EmployeesExport,
+        'EmployeeList.xlsx');
+ } 
+     public function createPDF() {
+    // retreive all records from db
+        $data = Employee::all();
+        $data=Employee::with('position')->get();
+    // share data to view
+        view()->share('employees',$data);
+        $pdf = PDF::loadView('pdf_view', $data);
+    // download PDF file with download method
+        return $pdf->download('pdf_file.pdf');
+ }
 }

@@ -38,6 +38,15 @@ Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::post('/profile', 'ProfileController@store')->name('profile');
 Route::get('/profile/{id}', 'ProfileController@show');
 
+Route::post('file-import', 'EmployeeController@fileImport')->name('file-import');
+Route::get('file-export', 'EmployeeController@fileExport')->name('file-export');
+
+Route::post('file-import/position', 'PositionController@fileImport')->name('positionfile-import');
+Route::get('file-export/excel', 'PositionController@excelExport')->name('positionexcel-export');
+Route::get('file-export/csv', 'PositionController@csvExport')->name('positioncsv-export');
+
+Route::get('/employee/pdf','EmployeeController@createPDF');
+Route::get('/employee/pdf/position','PositionController@createPDF');
 
 
 Auth::routes();

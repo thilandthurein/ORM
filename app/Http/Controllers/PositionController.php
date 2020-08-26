@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Department;
 use App\Position;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PositionsExport;
+use App\Imports\PositionsImport;
+use PDF;
 
 class PositionController extends Controller
 {
@@ -104,4 +108,30 @@ class PositionController extends Controller
     {
         //
     }
+    public function fileImport(Request $request){
+        Excel::import(new PositionsImport, $request->file('file')->store('temp'));
+         return back();
+    }
+ /**
+ * @return \Illuminate\Support\Collection
+ */
+    public function excelExport() {
+    return Excel::download(new PositionsExport,
+        'PositionList.xlsx');
+ } 
+ public function csvExport() {
+    return Excel::download(new PositionsExport,
+        'PositionList.csv');
+ } 
+
+ public function createPDF() {
+    // retreive all records from db
+        $data = Position::all();
+        $data=Position::with('department')->get();
+    // share data to view
+        view()->share('positions',$data);
+        $pdf = PDF::loadView('pdf_viewposition', $data);
+    // download PDF file with download method
+        return $pdf->download('pdf_fileposition.pdf');
+ }
 }

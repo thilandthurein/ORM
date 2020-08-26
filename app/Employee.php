@@ -12,4 +12,5 @@ class Employee extends Model
     public function profile(){
     	return $this->hasMany('App\Profile');
     }
+    public $fillable=['name','position_id','email','salary'];
 }
